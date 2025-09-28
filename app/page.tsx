@@ -170,7 +170,7 @@ export default function Home(): React.JSX.Element {
           {!isConnected ? (
             <div>
               <p className="text-gray-600 mb-6">
-                点击下方按钮连接钱包
+                点击下方按钮连接您的钱包
               </p>
               <AppKitButton />
             </div>

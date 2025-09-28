@@ -44,12 +44,19 @@ createAppKit({
   defaultNetwork: sepolia, // 默认使用测试网，更安全
   // 启用多链支持
   enableNetworkSwitch: true,
-  // 自定义钱包列表，确保包含 Phantom
+  // 设置默认钱包列表（优先显示的钱包）
   featuredWalletIds: [
     'c57ca95b47569778a828d19178114f4db188b89ebdbfcae8ca4fa4e34e418ab', // MetaMask
     '19177a98252e07ddfc9af2083ba8e07f6273a63ecc9c6204ef71024a1bd8a06', // Phantom
     '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b230253ef1f8959bebc13ad', // WalletConnect
-  ]
+    'c286eebc742a537cd1d6818363e9dc53b21759a1e8e5d9b263a0caf9e2098', // Trust Wallet
+    'fd20dc426fb37566d74c4b3b0c0b4b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0', // Coinbase Wallet
+  ],
+  // 可选：限制显示的钱包（如果只想显示特定钱包）
+  // includeWalletIds: [
+  //   'c57ca95b47569778a828d19178114f4db188b89ebdbfcae8ca4fa4e34e418ab', // MetaMask
+  //   '19177a98252e07ddfc9af2083ba8e07f6273a63ecc9c6204ef71024a1bd8a06', // Phantom
+  // ]
 })
 
 export function Providers({ children }: { children: React.ReactNode }) {
