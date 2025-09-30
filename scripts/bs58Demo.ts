@@ -16,14 +16,14 @@ export class BS58Example {
     
     // 1. 基本编码/解码
     const originalData = Buffer.from('Hello, Solana!', 'utf8')
-    console.log('原始数据:', originalData.toString('hex'))
+    console.log('原始数据:', Buffer.from(originalData).toString('hex'))
     
     const encoded = bs58.encode(originalData)
     console.log('Base58 编码:', encoded)
     
     const decoded = bs58.decode(encoded)
-    console.log('Base58 解码:', decoded.toString('hex'))
-    console.log('解码后文本:', decoded.toString('utf8'))
+    console.log('Base58 解码:', Buffer.from(decoded).toString('hex'))
+    console.log('解码后文本:', Buffer.from(decoded).toString('utf8'))
     
     console.log('\n✅ 编码/解码验证:', Buffer.compare(originalData, decoded) === 0)
   }
@@ -39,7 +39,7 @@ export class BS58Example {
     const publicKey = new PublicKey('9DDx85W462zPiqqKhQ3X3v7E65DqurwcusfG3QY5f2Xi')
     console.log('Solana 公钥:', publicKey.toString())
     console.log('公钥字节长度:', publicKey.toBytes().length)
-    console.log('公钥字节 (hex):', publicKey.toBytes().toString('hex'))
+    console.log('公钥字节 (hex):', Buffer.from(publicKey.toBytes()).toString('hex'))
     
     // 手动使用 bs58 编码
     const manualEncoded = bs58.encode(publicKey.toBytes())
@@ -48,7 +48,7 @@ export class BS58Example {
     
     // 手动解码
     const manualDecoded = bs58.decode(publicKey.toString())
-    console.log('手动 bs58 解码:', manualDecoded.toString('hex'))
+    console.log('手动 bs58 解码:', Buffer.from(manualDecoded).toString('hex'))
     console.log('解码验证:', Buffer.compare(publicKey.toBytes(), manualDecoded) === 0)
   }
   
@@ -64,7 +64,7 @@ export class BS58Example {
     signatureBytes.write('This is a mock signature for demonstration purposes only', 0)
     
     console.log('签名字节长度:', signatureBytes.length)
-    console.log('签名字节 (hex):', signatureBytes.toString('hex'))
+    console.log('签名字节 (hex):', Buffer.from(signatureBytes).toString('hex'))
     
     // 编码签名
     const encodedSignature = bs58.encode(signatureBytes)
@@ -92,7 +92,7 @@ export class BS58Example {
     const base58Encoded = bs58.encode(data)
     
     // Hex 编码
-    const hexEncoded = data.toString('hex')
+    const hexEncoded = Buffer.from(data).toString('hex')
     
     console.log('原始数据长度:', data.length, '字节')
     console.log('Base64 编码长度:', base64Encoded.length, '字符')

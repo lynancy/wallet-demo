@@ -35,7 +35,7 @@ export class SolanaTransactionAnalyzer {
       description: '未知指令类型',
       details: {
         programId: programIdString,
-        data: instruction.data.toString('hex')
+        data: Buffer.from(instruction.data).toString('hex')
       }
     }
   }
@@ -65,7 +65,7 @@ export class SolanaTransactionAnalyzer {
       description: '未知的 System Program 指令',
       details: {
         dataLength: data.length,
-        data: data.toString('hex')
+        data: Buffer.from(data).toString('hex')
       }
     }
   }
@@ -115,7 +115,7 @@ export class SolanaTransactionAnalyzer {
       description: '未知的 Compute Budget 指令',
       details: {
         dataLength: data.length,
-        data: data.toString('hex')
+        data: Buffer.from(data).toString('hex')
       }
     }
   }
@@ -171,7 +171,7 @@ export class SolanaTransactionAnalyzer {
       description: '未知的 Token Program 指令',
       details: {
         dataLength: data.length,
-        data: data.toString('hex')
+        data: Buffer.from(data).toString('hex')
       }
     }
   }
@@ -213,7 +213,7 @@ export class SolanaTransactionAnalyzer {
             index,
             programId: programId.toString(),
             analysis,
-            rawData: instruction.data.toString('hex')
+            rawData: Buffer.from(instruction.data).toString('hex')
           })
           
           // 统计指令类型
@@ -239,7 +239,7 @@ export class SolanaTransactionAnalyzer {
           index,
           programId: instruction.programId.toString(),
           analysis,
-          rawData: instruction.data.toString('hex')
+          rawData: Buffer.from(instruction.data).toString('hex')
         })
         
         result.summary.totalInstructions++
