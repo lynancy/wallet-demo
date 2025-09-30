@@ -45,7 +45,7 @@ try {
     
     console.log('\n📋 VersionedTransaction 详细信息:')
     console.log('版本:', tx.version)
-    console.log('消息哈希:', tx.message.hash?.toString('hex'))
+    console.log('消息哈希:', 'N/A (VersionedMessage 没有 hash 属性)')
     
     // 解析消息
     if (tx.message) {
@@ -69,7 +69,7 @@ try {
           console.log(`    程序ID索引: ${instruction.programIdIndex}`)
           console.log(`    账户索引: [${instruction.accountKeyIndexes.join(', ')}]`)
           console.log(`    数据长度: ${instruction.data.length} 字节`)
-          console.log(`    数据 (hex): ${instruction.data.toString('hex')}`)
+          console.log(`    数据 (hex): ${Buffer.from(instruction.data).toString('hex')}`)
         })
       }
     }
@@ -78,7 +78,7 @@ try {
     if (tx.signatures && tx.signatures.length > 0) {
       console.log('\n✍️ 签名信息:')
       tx.signatures.forEach((signature, index) => {
-        console.log(`  签名 ${index}: ${signature.toString('base64')}`)
+        console.log(`  签名 ${index}: ${Buffer.from(signature).toString('base64')}`)
       })
     }
     
@@ -105,7 +105,7 @@ try {
     if (tx.signatures && tx.signatures.length > 0) {
       console.log('\n✍️ 签名信息:')
       tx.signatures.forEach((signature, index) => {
-        console.log(`  签名 ${index}: ${signature.toString('base64')}`)
+        console.log(`  签名 ${index}: ${signature.signature ? Buffer.from(signature.signature).toString('base64') : 'null'}`)
       })
     }
   } else {

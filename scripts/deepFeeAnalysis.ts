@@ -16,7 +16,7 @@ export class DeepSolanaFeeAnalyzer {
     // 解码 Base64
     const buffer = Buffer.from(transactionData, 'base64')
     console.log('原始数据长度:', buffer.length, '字节')
-    console.log('原始数据 (hex):', buffer.toString('hex'))
+    console.log('原始数据 (hex):', Buffer.from(buffer).toString('hex'))
     
     // 解析为 VersionedTransaction
     const tx = VersionedTransaction.deserialize(buffer)
@@ -27,9 +27,9 @@ export class DeepSolanaFeeAnalyzer {
     
     // 详细分析每个字节
     console.log('\n📊 字节级分析:')
-    console.log('前32字节 (签名):', buffer.subarray(0, 32).toString('hex'))
-    console.log('接下来32字节:', buffer.subarray(32, 64).toString('hex'))
-    console.log('接下来32字节:', buffer.subarray(64, 96).toString('hex'))
+    console.log('前32字节 (签名):', Buffer.from(buffer.subarray(0, 32)).toString('hex'))
+    console.log('接下来32字节:', Buffer.from(buffer.subarray(32, 64)).toString('hex'))
+    console.log('接下来32字节:', Buffer.from(buffer.subarray(64, 96)).toString('hex'))
     
     // 分析指令数据
     if (message.compiledInstructions) {
@@ -45,17 +45,17 @@ export class DeepSolanaFeeAnalyzer {
         console.log(`  程序ID索引: ${instruction.programIdIndex}`)
         console.log(`  账户索引: [${instruction.accountKeyIndexes.join(', ')}]`)
         console.log(`  数据长度: ${data.length} 字节`)
-        console.log(`  数据 (hex): ${data.toString('hex')}`)
+        console.log(`  数据 (hex): ${Buffer.from(data).toString('hex')}`)
         console.log(`  数据 (bytes): [${Array.from(data).join(', ')}]`)
         
         // 详细解析 Compute Budget 指令
         if (programIdString === 'ComputeBudget111111111111111111111111111111') {
-          this.analyzeComputeBudgetInstruction(data, index)
+          this.analyzeComputeBudgetInstruction(Buffer.from(data), index)
         }
         
         // 详细解析 System Program 指令
         if (programIdString === '11111111111111111111111111111111') {
-          this.analyzeSystemProgramInstruction(data, index)
+          this.analyzeSystemProgramInstruction(Buffer.from(data), index)
         }
       })
     }
@@ -72,8 +72,8 @@ export class DeepSolanaFeeAnalyzer {
     console.log('\n✍️ 签名分析:')
     if (tx.signatures) {
       tx.signatures.forEach((signature, index) => {
-        console.log(`  签名 ${index}: ${signature.toString('base64')}`)
-        console.log(`  签名 (hex): ${signature.toString('hex')}`)
+        console.log(`  签名 ${index}: ${Buffer.from(signature).toString('base64')}`)
+        console.log(`  签名 (hex): ${Buffer.from(signature).toString('hex')}`)
         console.log(`  签名长度: ${signature.length} 字节`)
       })
     }
@@ -169,10 +169,10 @@ export class DeepSolanaFeeAnalyzer {
         
         if (programIdString === 'ComputeBudget111111111111111111111111111111') {
           if (data.length === 9 && data[0] === 3) {
-            computeUnitPrice = Number(data.readBigUInt64LE(1))
+            computeUnitPrice = Number(Buffer.from(data.slice(1, 9)).readBigUInt64LE(0))
           }
           if (data.length === 5 && data[0] === 2) {
-            computeUnitLimit = data.readUInt32LE(1)
+            computeUnitLimit = Buffer.from(data.slice(1, 5)).readUInt32LE(0)
           }
         }
       })

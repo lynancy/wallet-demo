@@ -22,7 +22,7 @@ function testDataViewParsing() {
     console.log(`转换为 SOL: ${Number(amount) / 1e9} SOL`)
     
     // 验证结果
-    const expectedAmount = 1000000n // 0.001 SOL
+    const expectedAmount = BigInt(1000000) // 0.001 SOL
     if (amount === expectedAmount) {
       console.log('✅ DataView 解析方法工作正常!')
     } else {
@@ -50,7 +50,7 @@ function testDataViewParsing() {
         console.log('❌ Buffer 方法也有问题')
       }
     } catch (error) {
-      console.log('❌ Buffer 方法不可用:', error.message)
+      console.log('❌ Buffer 方法不可用:', (error as Error).message)
     }
     
     console.log('\n🎉 DataView 方法应该可以在浏览器中正常工作!')

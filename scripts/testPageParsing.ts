@@ -39,32 +39,32 @@ function testPageTransactionParsing() {
         }
         
         // 解析指令详情
-        let instructionDetails = {}
+        let instructionDetails: any = {}
         if (programType === 'System Program' && instruction.data.length >= 4) {
-          const instructionTypeBytes = instruction.data.slice(0, 4)
+          const instructionTypeBytes = Buffer.from(instruction.data.slice(0, 4))
           const instructionTypeNum = instructionTypeBytes.readUInt32LE(0)
           
           if (instructionTypeNum === 2) {
             instructionDetails = {
               type: 'SOL 转账',
-              amount: instruction.data.length >= 12 ? instruction.data.readBigUInt64LE(4).toString() : '0',
-              amountSOL: instruction.data.length >= 12 ? Number(instruction.data.readBigUInt64LE(4)) / 1e9 : 0
+              amount: instruction.data.length >= 12 ? Buffer.from(instruction.data.slice(4, 12)).readBigUInt64LE(0).toString() : '0',
+              amountSOL: instruction.data.length >= 12 ? Number(Buffer.from(instruction.data.slice(4, 12)).readBigUInt64LE(0)) / 1e9 : 0
             }
           }
         } else if (programType === 'Compute Budget Program') {
           if (instruction.data.length >= 4) {
-            const instructionTypeBytes = instruction.data.slice(0, 4)
+            const instructionTypeBytes = Buffer.from(instruction.data.slice(0, 4))
             const instructionTypeNum = instructionTypeBytes.readUInt32LE(0)
             
             if (instructionTypeNum === 3) {
               instructionDetails = {
                 type: '设置计算单元价格',
-                price: instruction.data.length >= 8 ? instruction.data.readBigUInt64LE(4).toString() : '0'
+                price: instruction.data.length >= 8 ? Buffer.from(instruction.data.slice(4, 12)).readBigUInt64LE(0).toString() : '0'
               }
             } else if (instructionTypeNum === 2) {
               instructionDetails = {
                 type: '设置计算单元限制',
-                limit: instruction.data.length >= 8 ? instruction.data.readBigUInt64LE(4).toString() : '0'
+                limit: instruction.data.length >= 8 ? Buffer.from(instruction.data.slice(4, 12)).readBigUInt64LE(0).toString() : '0'
               }
             }
           }
@@ -77,13 +77,13 @@ function testPageTransactionParsing() {
           programIdIndex: instruction.programIdIndex,
           accountIndexes: instruction.accountKeyIndexes,
           dataLength: instruction.data.length,
-          data: instruction.data.toString('hex'),
+          data: Buffer.from(instruction.data).toString('hex'),
           details: instructionDetails
         }
       }) || [],
       signatures: versionedTransaction.signatures?.map((sig, index) => ({
         index,
-        signature: sig.toString('base64'),
+        signature: Buffer.from(sig).toString('base64'),
         isEmpty: sig.every(byte => byte === 0)
       })) || [],
       rawData: {

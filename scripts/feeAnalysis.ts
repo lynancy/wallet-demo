@@ -38,7 +38,7 @@ export class SolanaFeeAnalyzer {
           
           // 累加优先费用
           if (analysis.type === 'ComputeBudget::SetComputeUnitPrice') {
-            result.priorityFee += analysis.priorityFee
+            result.priorityFee += analysis.priorityFee || 0
           }
         })
       }
@@ -54,7 +54,7 @@ export class SolanaFeeAnalyzer {
         })
         
         if (analysis.type === 'ComputeBudget::SetComputeUnitPrice') {
-          result.priorityFee += analysis.priorityFee
+          result.priorityFee += analysis.priorityFee || 0
         }
       })
     }
@@ -192,21 +192,6 @@ try {
   console.log(`  基础费用: ${actualFee.baseFee} lamports (${actualFee.baseFeeSOL.toFixed(9)} SOL)`)
   console.log(`  优先费用: ${actualFee.priorityFee} lamports (${actualFee.priorityFeeSOL.toFixed(9)} SOL)`)
   console.log(`  总费用: ${actualFee.totalFee} lamports (${actualFee.totalFeeSOL.toFixed(9)} SOL)`)
-  
-  // 与钱包显示对比
-  console.log('\n💡 钱包手续费对比说明:')
-  console.log('钱包显示的手续费可能包括:')
-  console.log('1. 基础交易费用: 5,000 lamports')
-  console.log('2. 优先费用: 根据计算单元价格和限制计算')
-  console.log('3. 可能的额外费用或显示格式差异')
-  
-  console.log('\n🔍 常见差异原因:')
-  console.log('1. 钱包可能显示的是预估费用，实际费用可能不同')
-  console.log('2. 钱包可能使用不同的计算方式')
-  console.log('3. 钱包可能显示的是总费用（包括转账金额）')
-  console.log('4. 显示精度或单位转换的差异')
-  
-  console.log('\n✅ 手续费分析完成!')
 
 } catch (error) {
   console.error('❌ 分析失败:', error)

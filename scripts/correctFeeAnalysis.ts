@@ -57,12 +57,12 @@ export class CorrectSolanaFeeCalculator {
           if (programIdString === 'ComputeBudget111111111111111111111111111111') {
             if (data.length === 9 && data[0] === 3) {
               // SetComputeUnitPrice
-              computeUnitPrice = Number(data.readBigUInt64LE(1))
+              computeUnitPrice = Number(Buffer.from(data.slice(1, 9)).readBigUInt64LE(0))
             }
             
             if (data.length === 5 && data[0] === 2) {
               // SetComputeUnitLimit
-              computeUnitLimit = data.readUInt32LE(1)
+              computeUnitLimit = Buffer.from(data.slice(1, 5)).readUInt32LE(0)
             }
           }
         })

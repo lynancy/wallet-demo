@@ -127,7 +127,7 @@ export class BS58Example {
       const invalidBase58 = 'This is not valid base58!'
       bs58.decode(invalidBase58)
     } catch (error) {
-      console.log('捕获到解码错误:', error.message)
+      console.log('捕获到解码错误:', (error as Error).message)
     }
     
     try {
@@ -135,7 +135,7 @@ export class BS58Example {
       const invalidChars = '0OIl' // 这些字符不在 Base58 字符集中
       bs58.decode(invalidChars)
     } catch (error) {
-      console.log('捕获到字符错误:', error.message)
+      console.log('捕获到字符错误:', (error as Error).message)
     }
   }
   

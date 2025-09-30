@@ -59,7 +59,7 @@ async function explainPriorityFee() {
     }
     
   } catch (error) {
-    console.log(`❌ 网络测试失败: ${error.message}`)
+    console.log(`❌ 网络测试失败: ${(error as Error).message}`)
   }
 
   console.log('\n🛠️ 实际使用建议:')

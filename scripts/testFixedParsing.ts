@@ -21,16 +21,16 @@ function testFixedParsing() {
     
     // 测试手动解析方法
     const amountBytes = instructionData.slice(4, 12)
-    let amount = 0n
+    let amount = BigInt(0)
     for (let i = 0; i < 8; i++) {
-      amount += BigInt(amountBytes[i]) * (2n ** BigInt(i * 8))
+      amount += BigInt(amountBytes[i]) * (BigInt(2) ** BigInt(i * 8))
     }
     
     console.log(`解析结果: ${amount.toString()} lamports`)
     console.log(`转换为 SOL: ${Number(amount) / 1e9} SOL`)
     
     // 验证结果
-    const expectedAmount = 1000000n // 0.001 SOL
+    const expectedAmount = BigInt(1000000) // 0.001 SOL
     if (amount === expectedAmount) {
       console.log('✅ 手动解析方法工作正常!')
     } else {
@@ -43,7 +43,7 @@ function testFixedParsing() {
       const result = testBuffer.readBigUInt64LE(0)
       console.log('✅ Buffer.readBigUInt64LE 可用')
     } catch (error) {
-      console.log('❌ Buffer.readBigUInt64LE 不可用:', error.message)
+      console.log('❌ Buffer.readBigUInt64LE 不可用:', (error as Error).message)
       console.log('✅ 使用手动解析方法作为备选方案')
     }
     

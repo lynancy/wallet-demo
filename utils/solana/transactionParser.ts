@@ -95,7 +95,7 @@ export class SolanaTransactionParser {
         
         console.log('\n📋 VersionedTransaction 详细信息:')
         console.log('版本:', tx.version)
-        console.log('消息哈希:', tx.message.hash?.toString('hex'))
+        console.log('消息哈希:', tx.message.hash ? Buffer.from(tx.message.hash).toString('hex') : 'N/A')
         
         // 解析消息
         if (tx.message) {
@@ -106,7 +106,7 @@ export class SolanaTransactionParser {
           // 显示账户
           if (tx.message.staticAccountKeys) {
             console.log('\n🏦 涉及的账户:')
-            tx.message.staticAccountKeys.forEach((account, index) => {
+            tx.message.staticAccountKeys.forEach((account: any, index: number) => {
               console.log(`  ${index}: ${account.toString()}`)
             })
           }
@@ -114,12 +114,12 @@ export class SolanaTransactionParser {
           // 显示指令
           if (tx.message.compiledInstructions) {
             console.log('\n📝 指令详情:')
-            tx.message.compiledInstructions.forEach((instruction, index) => {
+            tx.message.compiledInstructions.forEach((instruction: any, index: number) => {
               console.log(`  指令 ${index}:`)
               console.log(`    程序ID索引: ${instruction.programIdIndex}`)
               console.log(`    账户索引: [${instruction.accountKeyIndexes.join(', ')}]`)
               console.log(`    数据长度: ${instruction.data.length} 字节`)
-              console.log(`    数据 (hex): ${instruction.data.toString('hex')}`)
+              console.log(`    数据 (hex): ${Buffer.from(instruction.data).toString('hex')}`)
             })
           }
         }
@@ -127,8 +127,8 @@ export class SolanaTransactionParser {
         // 显示签名
         if (tx.signatures && tx.signatures.length > 0) {
           console.log('\n✍️ 签名信息:')
-          tx.signatures.forEach((signature, index) => {
-            console.log(`  签名 ${index}: ${signature.toString('base64')}`)
+          tx.signatures.forEach((signature: any, index: number) => {
+            console.log(`  签名 ${index}: ${Buffer.from(signature).toString('base64')}`)
           })
         }
         
@@ -142,20 +142,20 @@ export class SolanaTransactionParser {
         // 显示账户
         if (tx.instructions) {
           console.log('\n📝 指令详情:')
-          tx.instructions.forEach((instruction, index) => {
+          tx.instructions.forEach((instruction: any, index: number) => {
             console.log(`  指令 ${index}:`)
             console.log(`    程序ID: ${instruction.programId.toString()}`)
-            console.log(`    账户: [${instruction.keys.map(k => k.pubkey.toString()).join(', ')}]`)
+            console.log(`    账户: [${instruction.keys.map((k: any) => k.pubkey.toString()).join(', ')}]`)
             console.log(`    数据长度: ${instruction.data.length} 字节`)
-            console.log(`    数据 (hex): ${instruction.data.toString('hex')}`)
+            console.log(`    数据 (hex): ${Buffer.from(instruction.data).toString('hex')}`)
           })
         }
         
         // 显示签名
         if (tx.signatures && tx.signatures.length > 0) {
           console.log('\n✍️ 签名信息:')
-          tx.signatures.forEach((signature, index) => {
-            console.log(`  签名 ${index}: ${signature.toString('base64')}`)
+          tx.signatures.forEach((signature: any, index: number) => {
+            console.log(`  签名 ${index}: ${Buffer.from(signature).toString('base64')}`)
           })
         }
       }
@@ -227,7 +227,7 @@ export async function analyzeSolanaTransaction(base64Data: string) {
   console.log('数据长度:', result.rawData.length, '字节')
   
   if (!result.success) {
-    console.log('解析错误:', result.parseError || result.error)
+    console.log('解析错误:', (result as any).parseError || (result as any).error)
   }
   
   console.log('=' .repeat(50))

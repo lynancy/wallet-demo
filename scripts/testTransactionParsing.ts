@@ -53,7 +53,7 @@ async function testTransactionParsing() {
         console.log(`    程序ID索引: ${instruction.programIdIndex}`)
         console.log(`    账户索引: [${instruction.accountKeyIndexes.join(', ')}]`)
         console.log(`    数据长度: ${instruction.data.length} 字节`)
-        console.log(`    数据: ${instruction.data.toString('hex')}`)
+        console.log(`    数据: ${Buffer.from(instruction.data).toString('hex')}`)
       })
     }
     
@@ -64,7 +64,7 @@ async function testTransactionParsing() {
         const isEmpty = sig.every(byte => byte === 0)
         console.log(`  签名 ${index}: ${isEmpty ? '空签名' : '已签名'}`)
         if (!isEmpty) {
-          console.log(`    签名值: ${sig.toString('base64')}`)
+          console.log(`    签名值: ${Buffer.from(sig).toString('base64')}`)
         }
       })
     }
@@ -89,13 +89,13 @@ async function testTransactionParsing() {
         
         // 如果是 System Program，尝试解析转账指令
         if (instructionType === 'System Program' && instruction.data.length >= 4) {
-          const instructionTypeBytes = instruction.data.slice(0, 4)
+          const instructionTypeBytes = Buffer.from(instruction.data.slice(0, 4))
           const instructionTypeNum = instructionTypeBytes.readUInt32LE(0)
           
           if (instructionTypeNum === 2) {
             console.log(`    -> SOL 转账指令`)
             if (instruction.data.length >= 12) {
-              const amount = instruction.data.readBigUInt64LE(4)
+              const amount = Buffer.from(instruction.data.slice(4, 12)).readBigUInt64LE(0)
               console.log(`    -> 转账金额: ${amount.toString()} lamports (${Number(amount) / 1e9} SOL)`)
             }
           }
@@ -104,19 +104,19 @@ async function testTransactionParsing() {
         // 如果是 Compute Budget Program
         if (instructionType === 'Compute Budget Program') {
           if (instruction.data.length >= 4) {
-            const instructionTypeBytes = instruction.data.slice(0, 4)
+            const instructionTypeBytes = Buffer.from(instruction.data.slice(0, 4))
             const instructionTypeNum = instructionTypeBytes.readUInt32LE(0)
             
             if (instructionTypeNum === 3) {
               console.log(`    -> 设置计算单元价格`)
               if (instruction.data.length >= 8) {
-                const price = instruction.data.readBigUInt64LE(4)
+                const price = Buffer.from(instruction.data.slice(4, 12)).readBigUInt64LE(0)
                 console.log(`    -> 价格: ${price.toString()} micro-lamports`)
               }
             } else if (instructionTypeNum === 2) {
               console.log(`    -> 设置计算单元限制`)
               if (instruction.data.length >= 8) {
-                const limit = instruction.data.readBigUInt64LE(4)
+                const limit = Buffer.from(instruction.data.slice(4, 12)).readBigUInt64LE(0)
                 console.log(`    -> 限制: ${limit.toString()} 计算单元`)
               }
             }

@@ -50,11 +50,11 @@ export class FinalFeeCalculator {
         
         if (programIdString === 'ComputeBudget111111111111111111111111111111') {
           if (data.length === 9 && data[0] === 3) {
-            computeUnitPrice = Number(data.readBigUInt64LE(1))
+            computeUnitPrice = Number(Buffer.from(data.slice(1, 9)).readBigUInt64LE(0))
             console.log(`✅ 找到计算单元价格: ${computeUnitPrice} micro-lamports`)
           }
           if (data.length === 5 && data[0] === 2) {
-            computeUnitLimit = data.readUInt32LE(1)
+            computeUnitLimit = Buffer.from(data.slice(1, 5)).readUInt32LE(0)
             console.log(`✅ 找到计算单元限制: ${computeUnitLimit}`)
           }
         }

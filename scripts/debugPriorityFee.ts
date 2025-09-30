@@ -114,7 +114,7 @@ async function debugPriorityFee() {
           }
           
         } catch (error) {
-          console.log(`  ❌ 连接失败: ${error.message}`)
+          console.log(`  ❌ 连接失败: ${(error as Error).message}`)
         }
       }
       
